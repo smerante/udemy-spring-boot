@@ -1,0 +1,12 @@
+<nav role="navigation" class="navbar navbar-default">
+	<div class="navbar-collapse">
+		<ul class="nav navbar-nav">
+			<li class='<c:if test="${activeTab == 'welcome'}">active</c:if>'><a href="/">Home</a></li>
+			<li class='<c:if test="${activeTab == 'list-todos'}">active</c:if>'><a href="/list-todos">List Todos</a></li>
+			<li class='<c:if test="${activeTab == 'add-todo'}">active</c:if>'><a href="/add-todo">Add Todos</a></li>
+		</ul>
+		<ul class="nav  navbar-nav navbar-right">
+			<li class="active"><a href="/logout">Logout</a></li>		
+		</ul>
+	</div>
+</nav>

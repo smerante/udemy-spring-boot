@@ -1,0 +1,152 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 27: Create two user roles for authentication one for survey and another for welcome/actuator/hal
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 20: Updated URI for db UserRepository : 
+@RepositoryRestResource(path="users",collectionResourceRel="users")
+Can do gets and post to repository
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 19: Create Data in the in-memory DB at startup of application using UserCommandLineRunner
+Added logger slf4j
+Added query method to find user by role
+printed it out testing it in userCommandLineRunner
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 18: Embeded data bases
+h2database provides an embeded db :: spring-boot-starter-data-jpa configures spring data jpa and points to that in memory DB
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 17: Type safe config properties
+BasicConfiguration 
+@Component //so its scanned in spring app
+@ConfigurationProperties("basic") // means its a config bean
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 16: Using a profile
+application-{profile-name}.properties
+@Profile("dev") on a bean
+Usage
+Configure Resources - Databases, Queues, External Services
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 15: properties updates, addign variables, configuration
+--spring.config.location=classpath:/default.properties
+    
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 14:Embedded Servers
+Default dependency on tom-cat for spring boot
+	if we want to use other embedded servers, we need to 
+	   <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+    and include something else ... like jetty
+    
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 13:
+Added actuator for metrics
+Added HAL to view logs and metrics(Like Splunk)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 12:
+Spring Initializr
+https://start.spring.io
+Create a few projects!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 11: 
+To create response for xml as well as JSON GET & Post
+Postman: accept:application/xml
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+	<artifactId>jackson-dataformat-xml</artifactId>
+</dependency>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 10:
+POST Response
+ResponsEntity creating : https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html
+ResponseEntity(MultiValueMap<java.lang.String,java.lang.String> headers, HttpStatus status)
+Create a new HttpEntity with the given headers and status code, and no body.
+ResponseEntity(T body, HttpStatus status)
+Create a new ResponseEntity with the given body and status code, and no headers.
+ResponseEntity(T body, MultiValueMap<java.lang.String,java.lang.String> headers, HttpStatus status)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 9
+These will not trigger restart - /META-INF/maven, /META-INF/resources ,/resources ,/static ,/public or /templates
+Folders can be configured : spring.devtools.restart.exclude=static/,public/
+Additional Paths : spring.devtools.restart.additional-paths
+LiveReload http://livereload.com/extensions/
+Technology in progress!! So, expect a few problems!
+Programming Tip
+Become an expert at your IDE - https://www.youtube.com/watch?v=dN9GYsG1v_c
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STEP 8
+http://localhost:8080/surveys/Survey1/questions/Question1
+Different Request Methods
+GET - Retrieve details of a resource
+POST - Create a new resource
+PUT	- Update an existing resource
+PATCH - Update part of a resource
+DELETE - Delete a resource
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+REST is 
+Representational state transfer : 
+Constraints for REST
+1. There is a Client and Server
+	a. Each service is stateless, it keeps applications decoupled
+	b. Each resource should have its own resource identifier(i.e. /survey/survey1/questions
+	c. Server should not rely on direct transfer to client
+	d. Resource can have different representations based on client (i.e. headers:{type:JSON,XML,etc..) (JSON, XML, ETC..)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How does List<Questions> get automatically converted to JSON?
+Spring Boot Autoconfigures it to convert from JSON to Object. 
+
+using [org.springframework.http.converter.json.MappingJackson2HttpMessageConverter@72566d44]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Create endpoint "/survey/{serveyID}/questions" :
+"/surveys/Survey1/questions"
+
+Create a SurveyController
+
+com.in28minutes.springboot.services.SurveyService
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Some Spring Related Questions:
+How does Spring Framework know where to search for beans to manage?
+What are the annotations Spring looks for?
+What if Spring does not find what it is looking for? : .WelcomeService]: expected at least 1 bean which qualifies as autowire candidate for this dependency
+Make sure its being picked up by @ComponentScan
+Spring looks for: @Component, @Service, @Controller, @Repository
+
+
+What auto configurations does Spring Boot bring in? 
+	- Dispatcher Service(error page implementation)
+logging.level.org.springframework: DEBUG // for all logging.level: DEBUG
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5 Steps to starting sprint boot app
+
+1. Spring Boot Starter Parent //spring-boot-starter-parent
+2. Spring Boot Starter Web //<artifactId>spring-boot-starter-web
+3. Java V -8 // add to properties tag <java.version>1.8</java.version>
+4. Spring Boot Plugin//<build><plugins>spring-boot-maven-plugin
+5. Create Spring Boot Application Launcher //Create main class SpringApplication.run(MainClass.class)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+spring-boot-starter-web-services (Lets you do things like SOAP calls)
+spring-boot-starter-test(Mockito, JUnit)
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Spring Vs Spring Boot
+SPRING:
+Spring is auto injection framework
+Spring is a framework to make Java EE development framework
+	- Make applications testable (Dependencies injection)
+	- Makes jdbc simple helping reduce the coding needed( SQL )
+	- Configuration files growing larger and larger, Spring made it easy with annotations 
+	
+Spring Boot
+	- Makes it easy to create standalone production ready applications. 
+	- Spring Boot will autoconfigure dependencies to in your project(<hibernate.version>5.0.9.Final</hibernate.version>)
+	- Provide quick start for projects with spring 
+	- Spring Boot provides an embeded server. 
+	
+Spring Boot is not!:
+	- An app or web server (Provides integration with embeded servers ie. tomcat so you can use them easily)
+	- It does not implement frameworks(Just creates a wrappper so you can make them easily)
+	- Spring does not generate code
